@@ -1,65 +1,87 @@
-template <class data_type_matrix2d>
-class Matrix2D;
+#ifndef ADABOOST_CORE_DATA_STRUCTURES_HPP
+#define ADABOOST_CORE_DATA_STRUCTURES_HPP
 
-template <class data_type_vector>
-class Vector
+namespace adaboost
 {
-    private:
+    namespace core
+    {
+        template <class data_type_matrix2d>
+        class Matrix2D;
 
-        unsigned int size;
-        data_type_vector *data;
+        template <class data_type_vector>
+        class Vector
+        {
+            private:
 
-    public:
+                data_type_vector *data;
 
-        Vector();
+                unsigned int size;
 
-        Vector(unsigned int _size);
+                static data_type_vector*
+                _reserve_space(unsigned int _size);
 
-        void product(const Vector& vec,
-                     unsigned int& result);
+            public:
 
-        void product(const Matrix2D& vec,
-                     unsigned int& result);
+                Vector();
 
-        data_type_vector at(unsigned int index);
+                Vector(unsigned int _size);
 
-        void set(data_type_vector value,
-                 unsigned int index);
+                void product(const Vector& vec,
+                            unsigned int& result);
 
-        unsigned int get_size();
+                void product(const Matrix2D& vec,
+                            unsigned int& result);
 
-        ~Vector();
+                data_type_vector at(unsigned int index);
 
-};
+                void set(data_type_vector value,
+                        unsigned int index);
 
-template <class data_type_matrix2d>
-class Matrix2D
-{
-    private:
+                unsigned int get_size();
 
-        unsigned int rows, cols;
-        data_type_matrix2d **data;
+                ~Vector();
 
-    public:
+        };
 
-        Matrix2D();
+        template <class data_type_matrix2d>
+        class Matrix2D
+        {
+            private:
 
-        Matrix2D(unsigned int _rows,
-                 unsigned int _cols);
+                unsigned int rows, cols;
 
-        void product(const Matrix2D& mat,
-                     Matrix2D int& result);
+                data_type_matrix2d **data;
 
-        data_type_matrix2d at(unsigned int x,
-                              unsigned int y);
+                static data_type_matrix2d**
+                _reserve_space(unsigned int _rows,
+                               unsigned int _cols);
 
-        void set(data_type_matrix2d value,
-                 unsigned int x,
-                 unsigned int y);
+            public:
 
-        unsigned int get_rows();
+                Matrix2D();
 
-        unsigned int get_cols();
+                Matrix2D(unsigned int _rows,
+                        unsigned int _cols);
 
-        ~Matrix2D();
-};
+                void product(const Matrix2D& mat,
+                            Matrix2D int& result);
+
+                data_type_matrix2d at(unsigned int x,
+                                    unsigned int y);
+
+                void set(data_type_matrix2d value,
+                        unsigned int x,
+                        unsigned int y);
+
+                unsigned int get_rows();
+
+                unsigned int get_cols();
+
+                ~Matrix2D();
+        };
+    } // namespace core
+} // namespace adaboost
+
+#include "data_structures_impl.hpp"
+
+#endif

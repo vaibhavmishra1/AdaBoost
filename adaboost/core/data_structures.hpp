@@ -5,9 +5,6 @@ namespace adaboost
 {
     namespace core
     {
-        template <class data_type_matrix>
-        class Matrix;
-
         template <class data_type_vector>
         class Vector
         {
@@ -25,12 +22,6 @@ namespace adaboost
                 Vector();
 
                 Vector(unsigned int _size);
-
-                void product(const Vector<data_type_vector>& vec,
-                             data_type_vector& result);
-
-                void product(const Matrix<data_type_vector>& mat,
-                             Vector<data_type_vector>& result);
 
                 data_type_vector at(unsigned int index);
 
@@ -63,9 +54,6 @@ namespace adaboost
                 Matrix(unsigned int _rows,
                         unsigned int _cols);
 
-                void product(const Matrix<data_type_matrix>& mat,
-                             Matrix<data_type_matrix>& result);
-
                 data_type_matrix at(unsigned int x,
                                     unsigned int y);
 
@@ -79,6 +67,21 @@ namespace adaboost
 
                 ~Matrix();
         };
+
+        template <class data_type_vector>
+        void product(const Vector<data_type_vector>& vec1,
+                     const Vector<data_type_vector>& vec2,
+                     data_type_vector& result);
+
+        template <class data_type_vector, class data_type_matrix>
+        void product(const Vector<data_type_vector>& vec,
+                     const Matrix<data_type_matrix>& mat,
+                     Vector<data_type_vector>& result);
+
+        template <class data_type_matrix>
+        void product(const Matrix<data_type_matrix>& mat1,
+                     const Matrix<data_type_matrix>& mat2,
+                     Matrix<data_type_matrix>& result);
     } // namespace core
 } // namespace adaboost
 

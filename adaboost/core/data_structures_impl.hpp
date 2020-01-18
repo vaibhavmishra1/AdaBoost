@@ -31,32 +31,6 @@ namespace adaboost
         }
 
         template <class data_type_vector>
-        void Vector<data_type_vector>::
-        product(const Vector<data_type_vector>& vec, data_type_vector& result)
-        {
-            result = 0;
-            for(unsigned int i = 0; i < vec.get_size(); i++)
-            {
-                result += (this->at(i)*vec.at(i));
-            }
-        }
-
-        template <class data_type_vector>
-        void Vector<data_type_vector>::
-        product(const Matrix<data_type_vector>& mat,
-                Vector<data_type_vector>& result)
-        {
-            for(unsigned int j = 0; j < mat.get_cols(); j++)
-            {
-                result[j] = 0;
-                for(unsigned int i = 0; i < mat.get_rows(); i++)
-                {
-                    result[j] += (this->at(i)*mat.at(i, j));
-                }
-            }
-        }
-
-        template <class data_type_vector>
         data_type_vector Vector<data_type_vector>::
         at(unsigned int index)
         {
@@ -111,27 +85,6 @@ namespace adaboost
         }
 
         template <class data_type_matrix>
-        void Matrix<data_type_matrix>::
-        product(const Matrix<data_type_matrix>& mat,
-                Matrix<data_type_matrix>& result)
-        {
-            check(this->get_cols() == mat.get_rows(),
-                          "Order of matrices don't match.");
-            unsigned int common_cols = this->get_cols();
-            for(unsigned int i = 0; i < result.get_rows(); i++)
-            {
-                for(unsigned int j = 0; j < result.get_cols(); j++)
-                {
-                    result[i][j] = 0;
-                    for(unsigned int k = 0; k < common_cols; k++)
-                    {
-                        result[i][j] += (this->at(i, k)*mat.at(k, j));
-                    }
-                }
-            }
-        }
-
-        template <class data_type_matrix>
         data_type_matrix Matrix<data_type_matrix>::
         at(unsigned int x, unsigned int y)
         {
@@ -176,6 +129,58 @@ namespace adaboost
             for(unsigned int i = 0; i < this->_rows; i++)
             {
                 delete [] this->data[i];
+            }
+        }
+
+        template <class data_type_vector>
+        void product(const Vector<data_type_vector>& vec1,
+                     const Vector<data_type_vector>& vec2,
+                     data_type_vector& result)
+        {
+            check(vec1.get_size() == vec2.get_size(),
+                  "Size of vectors don't match.");
+            result = 0;
+            for(unsigned int i = 0; i < vec1.get_size(); i++)
+            {
+                result += (vec1.at(i)*vec2.at(i));
+            }
+        }
+
+        template <class data_type_vector, class data_type_matrix>
+        void product(const Vector<data_type_vector>& vec,
+                     const Matrix<data_type_matrix>& mat,
+                     Vector<data_type_vector>& result)
+        {
+            check(vec.get_size() == mat.get_rows(),
+                  "Orders mismatch in the inputs.")
+            for(unsigned int j = 0; j < mat.get_cols(); j++)
+            {
+                result[j] = 0;
+                for(unsigned int i = 0; i < mat.get_rows(); i++)
+                {
+                    result[j] += (vec.at(i)*mat.at(i, j));
+                }
+            }
+        }
+
+        template <class data_type_matrix>
+        void product(const Matrix<data_type_matrix>& mat1,
+                     const Matrix<data_type_matrix>& mat2,
+                     Matrix<data_type_matrix>& result)
+        {
+            check(mat1.get_cols() == mat2.get_rows(),
+                  "Order of matrices don't match.");
+            unsigned int common_cols = mat1.get_cols();
+            for(unsigned int i = 0; i < result.get_rows(); i++)
+            {
+                for(unsigned int j = 0; j < result.get_cols(); j++)
+                {
+                    result[i][j] = 0;
+                    for(unsigned int k = 0; k < common_cols; k++)
+                    {
+                        result[i][j] += (mat1.at(i, k)*mat2.at(k, j));
+                    }
+                }
             }
         }
 

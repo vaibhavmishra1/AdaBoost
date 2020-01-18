@@ -1,0 +1,2 @@
+add_executable(adaboost_test
+test_data_structures.cpp)

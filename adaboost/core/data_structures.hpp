@@ -5,8 +5,8 @@ namespace adaboost
 {
     namespace core
     {
-        template <class data_type_matrix2d>
-        class Matrix2D;
+        template <class data_type_matrix>
+        class Matrix;
 
         template <class data_type_vector>
         class Vector
@@ -26,16 +26,16 @@ namespace adaboost
 
                 Vector(unsigned int _size);
 
-                void product(const Vector& vec,
-                            unsigned int& result);
+                void product(const Vector<data_type_vector>& vec,
+                             data_type_vector& result);
 
-                void product(const Matrix2D& vec,
-                            unsigned int& result);
+                void product(const Matrix<data_type_vector>& mat,
+                             Vector<data_type_vector>& result);
 
                 data_type_vector at(unsigned int index);
 
                 void set(data_type_vector value,
-                        unsigned int index);
+                         unsigned int index);
 
                 unsigned int get_size();
 
@@ -43,33 +43,33 @@ namespace adaboost
 
         };
 
-        template <class data_type_matrix2d>
-        class Matrix2D
+        template <class data_type_matrix>
+        class Matrix
         {
             private:
 
                 unsigned int rows, cols;
 
-                data_type_matrix2d **data;
+                data_type_matrix **data;
 
-                static data_type_matrix2d**
+                static data_type_matrix**
                 _reserve_space(unsigned int _rows,
                                unsigned int _cols);
 
             public:
 
-                Matrix2D();
+                Matrix();
 
-                Matrix2D(unsigned int _rows,
+                Matrix(unsigned int _rows,
                         unsigned int _cols);
 
-                void product(const Matrix2D& mat,
-                            Matrix2D int& result);
+                void product(const Matrix<data_type_matrix>& mat,
+                             Matrix<data_type_matrix>& result);
 
-                data_type_matrix2d at(unsigned int x,
+                data_type_matrix at(unsigned int x,
                                     unsigned int y);
 
-                void set(data_type_matrix2d value,
+                void set(data_type_matrix value,
                         unsigned int x,
                         unsigned int y);
 
@@ -77,7 +77,7 @@ namespace adaboost
 
                 unsigned int get_cols();
 
-                ~Matrix2D();
+                ~Matrix();
         };
     } // namespace core
 } // namespace adaboost
